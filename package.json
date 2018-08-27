@@ -1,0 +1,22 @@
+{
+  "name": "foodly-backend",
+  "version": "1.0.0",
+  "description": "Express server for foodly",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "watch": "nodemon ./src/app.js"
+  },
+  "author": "otaree",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "faker": "^4.1.0",
+    "mongoose": "^5.2.9",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.18.3"
+  }
+}
