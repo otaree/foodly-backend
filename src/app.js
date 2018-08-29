@@ -7,6 +7,7 @@ require('./db/mongoose');
 
 const productRoutes = require('./routes/products');
 const categoryRoutes = require('./routes/categories');
+const orderRoutes = require('./routes/orders');
 
 const port = process.env.PORT || 3000;
 
@@ -20,9 +21,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.get('/', (req, res) => res.send('Hello World'));
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/orders', orderRoutes);
 
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
