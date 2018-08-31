@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy
 const passportJWT = require('passport-jwt')
+const _ = require('underscore')
 
 const User = require('../models/User')
 
@@ -13,7 +14,7 @@ class Authentication {
     }, async function ( email, password, done) {
       try {
         const user = await User.findOne({ email })
-        if (user) return done(null, false, { message: 'email already registered'})
+        if (user) return done(null, false, { field: 'email', message: 'email already registered'})
         await new User({ email, password }).save()
         done(null)
       } catch (error) {
@@ -30,10 +31,10 @@ class Authentication {
     }, async function (email, password, done) {
       try {
         const user = await User.findOne({ email })
-        if (!user) return done(null, false, { message: 'email not registered' })
+        if (!user) return done(null, false, { field: 'email', message: 'email not registered' })
         const validPassword = await user.comparePassword(password)
-        if (!validPassword) return done(null, false, { message: 'wrong password' })
-        done(null, user)
+        if (!validPassword) return done(null, false, { field: 'password', message: 'wrong password' })
+        done(null, _.pick(user, '_id', 'email', 'address'))
       } catch (error) {
         done(error)
       }
@@ -48,7 +49,7 @@ class Authentication {
       try {
         const user = await User.findOne({ _id: payload._id })
         if (user) {
-          done(null, user)
+          done(null, _.pick(user, '_id', 'email', 'address'))
         } else {
           done(null, false)
         }

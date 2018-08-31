@@ -11,7 +11,7 @@ class AuthRoutes {
       this.passport.authenticate('signup', (err, user, info) => {
         if (info) {
           return res.status(400).json({ 
-           error: info.message
+           error: info
           })
         }
 
@@ -32,8 +32,11 @@ class AuthRoutes {
           console.error(err)
           return res.status(400).json()
         }
-        if (info) return res.status(400).json({ error: info.message })
+        if (info) {
+          return res.status(400).json({ error: info })
+        }
         res.json({
+          user,
           token: this.createToken(user)
         })
       })(req, res, next)
