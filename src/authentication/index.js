@@ -44,11 +44,13 @@ class Authentication {
   isAuthenticate () {
     return new passportJWT.Strategy({
       jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_SECRET
-    }, async (payload, done) => {
+      secretOrKey: process.env.JWT_SECRET,
+      passReqToCallback: true
+    }, async (req, payload, done) => {
       try {
         const user = await User.findOne({ _id: payload._id })
         if (user) {
+          req.user = _.pick(user, '_id', 'email', 'address')
           done(null, _.pick(user, '_id', 'email', 'address'))
         } else {
           done(null, false)
