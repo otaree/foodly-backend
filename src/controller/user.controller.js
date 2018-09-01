@@ -5,7 +5,6 @@ class UserController {
 
   async setAddress (req, res) {
     const address = _.pick(req.body, 'phone', 'addressLine1', 'addressLine2', 'city', 'state', 'pincode')
-
     try {
       await User.updateOne({ _id: req.user._id }, { $set: { address } })
       res.json({ message: 'successfully added address' })

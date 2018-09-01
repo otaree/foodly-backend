@@ -11,6 +11,7 @@ const categoryRoutes = require('./routes/categories');
 const orderRoutes = require('./routes/orders');
 const AuthRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const cartRoutes = require('./routes/cart')
 
 // auth
 const Authentication = require('./authentication')
@@ -35,5 +36,6 @@ app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/orders', passport.authenticate('jwt', { session: false }), orderRoutes);
 app.use('/user', passport.authenticate('jwt', { session: false }), userRoutes);
+app.use('/cart', passport.authenticate('jwt', { session: false }), cartRoutes);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

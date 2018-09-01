@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken')
+const CartService = require('../services/cart.services')
+
 
 class AuthRoutes {
   constructor (app, passport) {
     this.app = app
     this.passport = passport
+    this.cartService = new CartService()
   }
 
   routes () {
@@ -27,18 +30,24 @@ class AuthRoutes {
     })
 
     this.app.post('/login', (req, res, next) => {
-      this.passport.authenticate('login', (err, user, info) => {
+      this.passport.authenticate('login', async (err, user, info) => {
         if (err) {
-          console.error(err)
           return res.status(400).json()
         }
         if (info) {
           return res.status(400).json({ error: info })
         }
-        res.json({
-          user,
-          token: this.createToken(user)
-        })
+        try {
+          const cart = await this.cartService.getUserCart(user, req.body.cart)
+          res.json({
+            user,
+            cart,
+            token: this.createToken(user)
+          })
+        } catch (error) {
+          console.error(error)
+          res.status(401).json()
+        }
       })(req, res, next)
     })
   }
