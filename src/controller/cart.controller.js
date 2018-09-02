@@ -25,21 +25,22 @@ class CartController {
 
   async incrementProductCount(req, res) {
     try {
-      const cart = await Cart.findOneAndUpdate({ owner: req.user._id , "products._id": req.body.productId }, { $inc: { "products.$.qty": 1 } }, { new: true } )
+      const cart = await Cart.findOneAndUpdate({ owner: req.user._id , "products.product._id": req.body.productId }, { $inc: { "products.$.qty": 1 } }, { new: true } )
+      console.log(cart)      
       res.json({ cart })
     } catch (error) {
-      const cart = await Cart.findOneAndUpdate({ owner: req.user._id , "products._id": req.body.productId }, { $inc: { "products.$.qty": 1 } }, { new: true } )
-      res.json({ cart })
+      console.error(error)
+      res.status(400).json()
     }
   }
 
   async decrementProductCount(req, res) {
     try {
-      const cart = await Cart.findOneAndUpdate({ owner: req.user._id , "products._id": req.body.productId }, { $inc: { "products.$.qty": -1 } }, { new: true } )
+      const cart = await Cart.findOneAndUpdate({ owner: req.user._id , "products.product._id": req.body.productId }, { $inc: { "products.$.qty": -1 } }, { new: true } )
       res.json({ cart })
     } catch (error) {
-      const cart = await Cart.findOneAndUpdate({ owner: req.user._id , "products._id": req.body.productId }, { $inc: { "products.$.qty": 1 } }, { new: true } )
-      res.json({ cart })
+      console.error(error)
+      res.status(400).json()
     }
   }
 

@@ -46,7 +46,7 @@ class AuthRoutes {
           })
         } catch (error) {
           console.error(error)
-          res.status(401).json()
+          res.status(400).json()
         }
       })(req, res, next)
     })
