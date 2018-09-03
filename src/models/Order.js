@@ -2,12 +2,19 @@ const mongoose = require('mongoose')
 
 const OrderSchema = new mongoose.Schema({
   products: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product'
+    product: {},
+    qty: {
+      type: Number,
+      required: true 
+    }
   }],
-  status: {
-    type: String,
-    default: 'initiated'
+  buyer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  created: {
+    type: Date,
+    default: Date.now
   }
 })
 

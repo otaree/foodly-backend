@@ -4,7 +4,6 @@ class CartController {
 
   async addProduct(req, res) {
     try {
-      console.log(req.body.item)
       const cart = await Cart.findOneAndUpdate({ owner: req.user._id }, { $push: { "products": req.body.item } }, { new: true })
       res.json({ cart })
     } catch (error) {
