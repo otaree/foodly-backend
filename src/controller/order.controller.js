@@ -97,6 +97,24 @@ class OrderController {
     }
   }
 
+  async pagination(req, res) {
+    const user = req.user
+    let { limit, page } = req.query;
+    limit = !limit ? 2 : parseInt(limit);
+    page = !page ? 0 : parseInt(page);
+    try {
+      const orders = await Order.find({ buyer: user._id }).limit(limit).skip(limit * page).sort('-created')
+      console.log(orders.length)
+      res.json({
+        orders,
+        next: limit === orders.length ? true : false
+      })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json()
+    }
+  }
+
 }
 
 module.exports = OrderController;
