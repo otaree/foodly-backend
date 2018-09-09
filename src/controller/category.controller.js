@@ -41,6 +41,33 @@ class CategoryController {
       res.status(400).end();
     }
   }
+
+  /**
+   * returns products by category name
+   * @param {*} req 
+   * @param {*} res 
+   */
+  async getByName (req, res) {
+    console.log(req.params);
+    const { title } = req.params;
+    let { limit, page } = req.query;
+    limit = !limit ? 3 : parseInt(limit);
+    page = !page ? 0 : page;
+
+    try {
+      const category = await Category.findOne({ title })
+      if (!category) throw "Category Not Found";
+      const id = category._id;
+      const products = await Product.find({ category: id }).limit(limit).skip(limit * page);
+      res.json({
+        products,
+        next: limit === products.length ? true : false
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(400).end();
+    }
+  }
 }
 
 module.exports = CategoryController;
